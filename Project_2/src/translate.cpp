@@ -12,7 +12,10 @@ void translate::readInputFile(ifstream &input, ofstream &output) {
 		//replace spaces in line with | to make things easier for parsing
 		replace(line.begin(), line.end(), ' ', '|');
 		//if line contains the word input, output, or wire, call output function to add the variables to the array of all variable names for error checking
-		if (line.find("input") != string::npos || line.find("output") != string::npos || (line.find("wire") != string::npos && line.find("|") == 4)) {
+		if ((line.find("input") != string::npos && line.find("|") == 5) || (line.find("output") != string::npos && line.find("|") == 6) || (line.find("wire") != string::npos && line.find("|") == 4)) {
+			generateOutput(line);
+		}
+		else {
 			generateOutput(line);
 		}
 		entireOutput += line + "\n";
