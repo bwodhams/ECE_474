@@ -15,8 +15,11 @@ void translate::readInputFile(ifstream &input, ofstream &output) {
 		if ((line.find("input") != string::npos && line.find("|") == 5) || (line.find("output") != string::npos && line.find("|") == 6) || (line.find("wire") != string::npos && line.find("|") == 4)) {
 			generateOutput(line);
 		}
+		else if(line.length() == 0) {
+			
+		}
 		else {
-			generateOutput(line);
+			variableExists(line);
 		}
 		entireOutput += line + "\n";
 	}
@@ -49,4 +52,68 @@ string translate::generateOutput(string inputLine) {
 	}
 	
 	return "asdf";
+}
+
+bool translate::variableExists(string inputLine) {
+	int numSpaces = count(inputLine.begin(), inputLine.end(), '|');
+	if (numSpaces == 4) {
+		for (int i = 0; i < numSpaces + 1; i++) {
+			if (i == 1) {
+				inputLine.erase(0, 2);
+			}
+			else if (i == 3) {
+				inputLine.erase(0, 2);
+			}
+			else if (i == 4) {
+				if (find(allVars.begin(), allVars.end(), inputLine.substr(0)) != allVars.end()) {
+					//Final var exists
+				}
+				else {
+					cout << "error, " << inputLine << " doesn't exist" << endl;
+				}
+			}
+			else if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
+				//Variable exists, no errors
+				inputLine = inputLine.substr(inputLine.find("|"));
+				inputLine.erase(0, 1);
+			}
+			else {
+				cout << inputLine << "   has a variable that isn't defined prior" << endl;
+				return false;
+			}
+		}
+	}
+	
+	if (numSpaces == 6) {
+		for (int i = 0; i < numSpaces + 1; i++) {
+			cout << inputLine << endl;
+			if (i == 1) {
+				inputLine.erase(0, 2);
+			}
+			else if (i == 3) {
+				inputLine.erase(0, 2);
+			}
+			else if (i == 5) {
+				inputLine.erase(0, 2);
+			}
+			else if (i == 6) {
+				if (find(allVars.begin(), allVars.end(), inputLine.substr(0)) != allVars.end()) {
+					//Final var exists
+				}
+				else {
+					cout << "error, " << inputLine << " doesn't exist" << endl;
+				}
+			}
+			else if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
+				//Variable exists, no errors
+				inputLine = inputLine.substr(inputLine.find("|"));
+				inputLine.erase(0, 1);
+			}
+			else {
+				cout << inputLine << "   has a variable that isn't defined prior" << endl;
+				return false;
+			}
+		}
+	}
+	return true;
 }

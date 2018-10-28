@@ -19,6 +19,7 @@ public:
 	translate();	//default constructor
 	void readInputFile(ifstream &input, ofstream &output);	//reads the input file
 	string generateOutput(string inputLine);
+	bool variableExists(string inputLine);
 
 };
 
