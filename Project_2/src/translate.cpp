@@ -14,7 +14,7 @@ void translate::readInputFile(ifstream &input, ofstream &output) {
 		replace(line.begin(), line.end(), ' ', '|');
 		//if line contains the word input, output, or wire, call output function to add the variables to the array of all variable names for error checking
 		if ((line.find("input") != string::npos && line.find("|") == 5) || (line.find("output") != string::npos && line.find("|") == 6) || (line.find("wire") != string::npos && line.find("|") == 4) || (line.find("register") != string::npos && line.find("|") == 8)) {
-			generateOutput(line);
+			checkInitializationVars(line);
 		}
 		else if(line.length() == 0) {
 			
@@ -33,7 +33,7 @@ void translate::readInputFile(ifstream &input, ofstream &output) {
 	}
 }
 
-string translate::generateOutput(string inputLine) {
+void translate::checkInitializationVars(string inputLine) {
 	//Create array with all defined variables for error checking
 	//If input lines have extra spaces on the end, remove them
 	if (inputLine.find("||") != string::npos) {
@@ -55,8 +55,6 @@ string translate::generateOutput(string inputLine) {
 			}
 		}
 	}
-	
-	return "asdf";
 }
 
 bool translate::variableExists(string inputLine) {
