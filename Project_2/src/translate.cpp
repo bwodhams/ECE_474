@@ -56,6 +56,46 @@ string translate::generateOutput(string inputLine) {
 
 bool translate::variableExists(string inputLine) {
 	int numSpaces = count(inputLine.begin(), inputLine.end(), '|');
+	bool changedSpaces = false;
+	if (inputLine.find("||") != string::npos) {
+		numSpaces = numSpaces - 2;
+		changedSpaces = true;
+	}
+	if (numSpaces == 2) {
+		for (int i = 0; i < numSpaces + 1; i++) {
+			if (i == 1) {
+				inputLine.erase(0, 2);
+			}
+			else if (i == 2) {
+				if (changedSpaces == true) {
+					if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
+						//Final var exists
+					}
+					else {
+						cout << "error, " << inputLine << " doesn't exist" << endl;
+					}
+				}
+				else {
+					if (find(allVars.begin(), allVars.end(), inputLine.substr(0)) != allVars.end()) {
+						//Final var exists
+					}
+					else {
+						cout << "error, " << inputLine << " doesn't exist" << endl;
+					}
+				}
+
+			}
+			else if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
+				//Variable exists, no errors
+				inputLine = inputLine.substr(inputLine.find("|"));
+				inputLine.erase(0, 1);
+			}
+			else {
+				cout << inputLine << "   has a variable that isn't defined prior" << endl;
+				return false;
+			}
+		}
+	}
 	if (numSpaces == 4) {
 		for (int i = 0; i < numSpaces + 1; i++) {
 			if (i == 1) {
@@ -65,12 +105,23 @@ bool translate::variableExists(string inputLine) {
 				inputLine.erase(0, 2);
 			}
 			else if (i == 4) {
-				if (find(allVars.begin(), allVars.end(), inputLine.substr(0)) != allVars.end()) {
-					//Final var exists
+				if (changedSpaces == true) {
+					if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
+						//Final var exists
+					}
+					else {
+						cout << "error, " << inputLine << " doesn't exist" << endl;
+					}
 				}
 				else {
-					cout << "error, " << inputLine << " doesn't exist" << endl;
+					if (find(allVars.begin(), allVars.end(), inputLine.substr(0)) != allVars.end()) {
+						//Final var exists
+					}
+					else {
+						cout << "error, " << inputLine << " doesn't exist" << endl;
+					}
 				}
+				
 			}
 			else if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
 				//Variable exists, no errors
@@ -86,7 +137,6 @@ bool translate::variableExists(string inputLine) {
 	
 	if (numSpaces == 6) {
 		for (int i = 0; i < numSpaces + 1; i++) {
-			cout << inputLine << endl;
 			if (i == 1) {
 				inputLine.erase(0, 2);
 			}
