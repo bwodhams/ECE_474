@@ -6,6 +6,7 @@ translate::translate() {
 
 }
 vector <string> allVars;
+vector <string> allowedOperations{"=", "+", "-", ">", ">>", "<", "<<", "?", ":", "*"};
 void translate::readInputFile(ifstream &input, ofstream &output) {
 	string entireOutput = "";
 	for (string line; getline(input, line); ) {
@@ -61,6 +62,11 @@ bool translate::variableExists(string inputLine) {
 		numSpaces = numSpaces - 2;
 		changedSpaces = true;
 	}
+	//Check to make sure second char in line is equal sign
+	if (inputLine.substr(inputLine.find("|") + 1, 1) != "=") {
+		cout << "no equal sign" << endl;
+		return false;
+	}
 	if (numSpaces == 2) {
 		for (int i = 0; i < numSpaces + 1; i++) {
 			if (i == 1) {
@@ -102,6 +108,14 @@ bool translate::variableExists(string inputLine) {
 				inputLine.erase(0, 2);
 			}
 			else if (i == 3) {
+				if (find(allowedOperations.begin(), allowedOperations.end(), inputLine.substr(0, inputLine.find("|"))) != allowedOperations.end()) {
+					//Operation is valid
+				}
+				else {
+					//Operation is invalid
+					cout << "operation is invalid" << endl;
+					return false;
+				}
 				inputLine.erase(0, 2);
 			}
 			else if (i == 4) {
@@ -141,9 +155,25 @@ bool translate::variableExists(string inputLine) {
 				inputLine.erase(0, 2);
 			}
 			else if (i == 3) {
+				if (find(allowedOperations.begin(), allowedOperations.end(), inputLine.substr(0, inputLine.find("|"))) != allowedOperations.end()) {
+					//Operation is valid
+				}
+				else {
+					//Operation is invalid
+					cout << "operation is invalid" << endl;
+					return false;
+				}
 				inputLine.erase(0, 2);
 			}
 			else if (i == 5) {
+				if (find(allowedOperations.begin(), allowedOperations.end(), inputLine.substr(0, inputLine.find("|"))) != allowedOperations.end()) {
+					//Operation is valid
+				}
+				else {
+					//Operation is invalid
+					cout << "operation is invalid" << endl;
+					return false;
+				}
 				inputLine.erase(0, 2);
 			}
 			else if (i == 6) {
