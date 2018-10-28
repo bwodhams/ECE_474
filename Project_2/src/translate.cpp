@@ -12,6 +12,10 @@ void translate::readInputFile(ifstream &input, ofstream &output) {
 	for (string line; getline(input, line); ) {
 		//replace spaces in line with | to make things easier for parsing
 		replace(line.begin(), line.end(), ' ', '|');
+		//If input lines have extra spaces on the end, remove them
+		while (line.find("||") != string::npos) {
+			line.erase(line.length() - 2, 2);
+		}
 		//if line contains the word input, output, or wire, call output function to add the variables to the array of all variable names for error checking
 		if ((line.find("input") != string::npos && line.find("|") == 5) || (line.find("output") != string::npos && line.find("|") == 6) || (line.find("wire") != string::npos && line.find("|") == 4) || (line.find("register") != string::npos && line.find("|") == 8)) {
 			checkInitializationVars(line);
@@ -35,10 +39,6 @@ void translate::readInputFile(ifstream &input, ofstream &output) {
 
 void translate::checkInitializationVars(string inputLine) {
 	//Create array with all defined variables for error checking
-	//If input lines have extra spaces on the end, remove them
-	if (inputLine.find("||") != string::npos) {
-		inputLine.erase(inputLine.length() - 2, 2);
-	}
 	if (inputLine.find("input") != string::npos || inputLine.find("output") != string::npos || inputLine.find("wire") != string::npos || inputLine.find("register") != string::npos) {
 		string tempString = inputLine.substr(inputLine.find("|"));
 		tempString.erase(0, 1);
@@ -58,6 +58,8 @@ void translate::checkInitializationVars(string inputLine) {
 }
 
 bool translate::variableExists(string inputLine) {
+	string intialLine = inputLine;
+	string operation = "";
 	int numSpaces = count(inputLine.begin(), inputLine.end(), '|');
 	bool changedSpaces = false;
 	if (inputLine.find("||") != string::npos) {
@@ -80,7 +82,7 @@ bool translate::variableExists(string inputLine) {
 						//Final var exists
 					}
 					else {
-						cout << "1error, " << inputLine << " doesn't exist" << endl;
+						cout << "error, " << inputLine << " doesn't exist" << endl;
 					}
 				}
 				else {
@@ -88,7 +90,7 @@ bool translate::variableExists(string inputLine) {
 						//Final var exists
 					}
 					else {
-						cout << "2error, " << inputLine << " doesn't exist" << endl;
+						cout << "error, " << inputLine << " doesn't exist" << endl;
 					}
 				}
 
@@ -126,7 +128,7 @@ bool translate::variableExists(string inputLine) {
 						//Final var exists
 					}
 					else {
-						cout << "3error, " << inputLine << " doesn't exist" << endl;
+						cout << "error, " << inputLine << " doesn't exist" << endl;
 					}
 				}
 				else {
@@ -134,7 +136,7 @@ bool translate::variableExists(string inputLine) {
 						//Final var exists
 					}
 					else {
-						cout << "4error, " << inputLine << " doesn't exist" << endl;
+						cout << "error, " << inputLine << " doesn't exist" << endl;
 					}
 				}
 				
@@ -183,7 +185,7 @@ bool translate::variableExists(string inputLine) {
 					//Final var exists
 				}
 				else {
-					cout << "5error, " << inputLine << " doesn't exist" << endl;
+					cout << "error, " << inputLine << " doesn't exist" << endl;
 				}
 			}
 			else if (find(allVars.begin(), allVars.end(), inputLine.substr(0, inputLine.find("|"))) != allVars.end()) {
@@ -197,5 +199,6 @@ bool translate::variableExists(string inputLine) {
 			}
 		}
 	}
+
 	return true;
 }
