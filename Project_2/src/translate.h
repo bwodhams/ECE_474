@@ -6,22 +6,19 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <bitset>
+#include <vector>
+#include <algorithm>
 
 
 using namespace std;
 
 class translate {
 
-private:
-	string messageString;	//input message from file
-	string divisorString;	//input divisor(polynomial) from file 
-
 public:
 
 	translate();	//default constructor
 	void readInputFile(ifstream &input, ofstream &output);	//reads the input file
-	void generateOutput(ofstream &output);
+	string generateOutput(string inputLine);
 
 };
 
